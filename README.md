@@ -1,4 +1,4 @@
-Source for "Mind the Dialect: NLP Advancements Uncover Fairness Disparities for Arabic Users in Recommendation Systems"
+Source for "Mind the Dialect: NLP Advancements Uncover Fairness Disparities for Arabic Users in Recommendation Systems" accpeted at EMNLP 25.
 
 ## Create the conda environment
 
