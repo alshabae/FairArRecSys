@@ -44,23 +44,18 @@ def read_BARD(datasets_dir=None, core=3):
     data_dir = datasets_dir + '/BARD'
     # checkins_dir = data_dir + '/Processed_LABR.pkl'
     checkins_dir = data_dir + '/Processed_BARD.pkl'
-
-    # df_checkins = pd.read_csv(checkins_dir, sep='\t', dtype=str, header=None, names=['rating', 'reviewID', 'bookID', 'userID', 'review', 'dialect'], encoding='utf-8')
-    # df_checkins = pd.read_csv(checkins_dir, sep='\t', dtype=str, header=None, names=['rating', 'reviewID', 'userID', 'bookID', 'review', 'dialect'], encoding='utf-8')
+    
     df_checkins = pd.read_pickle(checkins_dir)
     df_checkins.rename({'userID': 'bookID', 'bookID': 'userID'}, axis=1, inplace=True)
-    # pdb.set_trace()
     df_checkins = df_checkins.drop_duplicates(subset=['bookID','userID'])
 
     # Apply C-core setting
     num_of_removed_rows = 1
-    # print(len(df_checkins))
     while(num_of_removed_rows > 0):
         df_lengh_before_filter = len(df_checkins)
         df_checkins = df_checkins[df_checkins.groupby(['userID']).bookID.transform('count') >= core]
         df_checkins = df_checkins[df_checkins.groupby(['bookID']).userID.transform('count') >= core]
         df_lengh_after_filter = len(df_checkins)
-        # print(len(df_checkins))
         num_of_removed_rows = df_lengh_before_filter - df_lengh_after_filter
 
     user_ids = df_checkins['userID'].unique().astype(str).tolist()
@@ -94,7 +89,6 @@ def read_BARD(datasets_dir=None, core=3):
         reindexed_ratings[user_id].append((item_id, aldi_score, multi_labels, numbered_dialects, one_hot))
         ratings_by_edges[(user_id,item_id)] = multi_labels
         
-    # pdb.set_trace()
 
     user_data = {}
     for i in range(len(user_ids)):
@@ -110,7 +104,6 @@ def read_BARD(datasets_dir=None, core=3):
         one_hot[numbered_dialects] = 1
         user_data[reindexed_user_id] = {'org_user_id' : user_ids[i], 'most_common_dilects' : most_common_dialects}
     
-    # pdb.set_trace() #(756, 5454)
     return user_data, item_data, reindexed_ratings, ratings_by_edges
 
 if __name__ == '__main__':
