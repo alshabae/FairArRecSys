@@ -17,4 +17,9 @@ TOKENIZERS_PARALLELISM=False CUDA_VISIBLE_DEVICES=0 python3 main.py --dataset=BA
 
 ## Hardware Requiremnts
 
-The code is designed to run on a singlee GPU. The training time for a single epoch depends on the dataset, but typically takes two minutes on a desktop-class GPU. The code has been tested on a machine with over 100GB of RAM, which allows data loading to be efficient.
+The code is designed to run on a single GPU. The training time for a single epoch depends on the dataset, but typically takes two minutes on a desktop-class GPU. The code has been tested on a machine with over 100GB of RAM, which allows data loading to be efficient.
+
+## Base Repo
+
+This repo is based on [BiasedUserHistorySynthesis](https://github.com/lkp411/BiasedUserHistorySynthesis) by [lkp411](https://github.com/lkp411).
+
