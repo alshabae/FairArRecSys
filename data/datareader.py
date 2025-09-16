@@ -114,4 +114,4 @@ def read_BARD(datasets_dir=None, core=3):
     return user_data, item_data, reindexed_ratings, ratings_by_edges
 
 if __name__ == '__main__':
-    read_BARD(datasets_dir='/home/aalshaba/ArRecSys/Base/BiasedUserHistorySynthesis_final/data/datasets')
+    read_BARD(datasets_dir='')
