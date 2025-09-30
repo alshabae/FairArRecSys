@@ -209,7 +209,8 @@ def inference(model,
     topk_reindexed_ids_per_user = []
     topk_original_ids_per_user = []
     topk_scores_per_user = []
-    
+
+    user_ids_mapping = []
     iGraph : InteractionGraph = val_loader.dataset.igraph
     for _, (true_edges, edges_to_score, offsets) in enumerate(tqdm(val_loader)):
         for i, true_edge in enumerate(true_edges):
@@ -253,6 +254,7 @@ def inference(model,
             
             topk.append(topk_idxs)
             true_indices.append(true_idx)
+            user_ids_mapping.append(user_id.cpu().item())
 
             if isCold:
                 topk_cold.append(topk_idxs)
@@ -278,9 +280,10 @@ def inference(model,
 
     print(f"HR@{k} Overall = {hitrate_k_combined}, NDCG@{k} Overall = {ndcg_k_combined}")
     
-
+    id_to_index = {uid: i for i, uid in enumerate(user_ids_mapping)}
     for range_label, ids in iGraph.range_user_ids.items():
-        temp_hitrate_k_combined, temp_ndcg_k_combined = compute_ranking_metrics(topk=topk[ids], true_indices=true_indices[ids])
+        indices_mapped = [id_to_index[uid] for uid in ids]
+        temp_hitrate_k_combined, temp_ndcg_k_combined = compute_ranking_metrics(topk=topk[indices_mapped], true_indices=true_indices[indices_mapped])
         print(f"Range {range_label}: HR@{k} Overall = {temp_hitrate_k_combined}, NDCG@{k} Overall = {temp_ndcg_k_combined}")
 
     
